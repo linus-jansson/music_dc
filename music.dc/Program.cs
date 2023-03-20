@@ -54,11 +54,11 @@ public class Program
         pingCommand.WithDescription("Ping the bot");
 
 
-
         try
         {
             // Now that we have our builder, we can call the CreateApplicationCommandAsync method to make our slash command.
             await guild.CreateApplicationCommandAsync(guildCommand.Build());
+            await guild.CreateApplicationCommandAsync(pingCommand.Build());
 
             // With global commands we don't need the guild.
             await _client.CreateGlobalApplicationCommandAsync(globalCommand.Build());
@@ -82,9 +82,11 @@ public class Program
             case "ping":
                 await PingCommand(Command);
                 break;
+            default:
+                await Command.RespondAsync($"You executed {Command.Data.Name}");
+                break;
         }
 
-        await Command.RespondAsync($"You executed {Command.Data.Name}");
     }
 
     private async Task PingCommand(SocketSlashCommand Command)
